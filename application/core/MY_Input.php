@@ -1,5 +1,14 @@
 <?php if ( ! defined("BASEPATH")) exit("No direct script access allowed");
 
+/**
+ * CI Input extended library
+ *
+ * @package	Request Controller
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
+ * @link	http://developer.dol.gov
+ * @version 1.0.0
+ */
+
 class MY_Input extends CI_Input 
 {
 	private $searchtbl = "search_query";

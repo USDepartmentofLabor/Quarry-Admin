@@ -1,13 +1,13 @@
 <?php if (! defined ( "BASEPATH" )) exit ( "No direct script access allowed" );
 
 /**
- * APIv2 AdminUI Admin Controller
+ * @name 	APIv2 AdminUI Admin Controller
  *
- * @package Admin Controller
- * @author
- * @link http://developer.dol.gov
+ * @author  johnsonpatrickk (Patrick Johnson Jr.)
+ * @license	http://developer.dol.gov
  * @version 1.0.0
  */
+
 class Admin extends CI_Controller {
 	// number of records per/page
 	private $limit = 10;

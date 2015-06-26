@@ -4,7 +4,7 @@
  * APIv2 AdminUI Pilot Permissions Controller
  *
  * @package	Role Controller
- * @author
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */

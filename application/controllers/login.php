@@ -1,10 +1,10 @@
 <?php if ( ! defined("BASEPATH")) exit("No direct script access allowed");
 
 /**
- * APIv2 AdminUI Pilot Login Controller
+ * APIv2 AdminUI Login Controller
  *
  * @package	Login Controller
- * @author
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */
@@ -17,14 +17,14 @@ class Login extends CI_Controller {
 		$this->output->nocache();
 
 		// bootstrap dashboard model
-		$this->load->model("Dashboard_model", "", TRUE);
+		$this->load->model("login_model", "", TRUE);
 	}
 
 	function index() {
 		//set default attributes
 		$data = array(
-			'title' => "Login - Department of Labor - APIv2",
-			'subtitle' => "DOL APIv2 - AdminUI",
+			'title' => "Login - Quarry AdminUI - APIv2",
+			'subtitle' => "Quarry AdminUI",
 			'action' => "login/validate_credentials",
 			'login_content' => "login_view/login_form"		
 		);
@@ -34,15 +34,15 @@ class Login extends CI_Controller {
 	function validate_credentials() {
 		
 		// load database model
-		$this->load->model("Dashboard_model");
+		$this->load->model("login_model");
 		
-		$query = $this->Dashboard_model->validate();
+		$query = $this->login_model->validate();
 		
 		//If the user's credentials validate...
 		if ($query == AUTH_PASS) {
 			// get user details
-			$user = $this->Dashboard_model->get_by_user($user = $this->input->post("username"))->row();
-			$is_admin = $this->Dashboard_model->is_user_admin($user->user_id);
+			$user = $this->login_model->get_by_user($user = $this->input->post("username"))->row();
+			$is_admin = $this->login_model->is_user_admin($user->user_id);
 							
 			$data = array(
 				"username" => $this->input->post("username"),
@@ -62,8 +62,8 @@ class Login extends CI_Controller {
 			$this->password_change_req();
 		} else {			
 			$data = array(
-				'title' => "Validate User Account - Department of Labor - APIv2",					
-				'subtitle' => "DOL APIv2 - AdminUI",
+				'title' => "Validate User Account - Quarry AdminUI - APIv2",					
+				'subtitle' => "Quarry AdminUI",
 				'action' => "login/validate_credentials",
 				'login_content' => "login_view/login_form",
 				'error' => "<div class=\"alert alert-danger alert-dismissable\">
@@ -79,7 +79,7 @@ class Login extends CI_Controller {
 
 		// set default parameters
 		$data = array(
-			'title' => "Password Change Required - Department of Labor - APIv2",
+			'title' => "Password Change Required - Quarry AdminUI - APIv2",
 			'action' => site_url("login/password_change_process"),
 			'user' => $this->input->post("username"),
 			'login_content' => "login_view/password_change_req"	
@@ -90,10 +90,10 @@ class Login extends CI_Controller {
 
 	function password_change_process() {
 		// load database model
-		$this->load->model("Dashboard_model");
+		$this->load->model("login_model");
 
 		// set default parameters
-		$data["title"] = "Password Change Required - Department of Labor - APIv2";
+		$data["title"] = "Password Change Required - Quarry AdminUI - APIv2";
 		$data["action"] = site_url("login/password_change_process");
 
 		// set empty default form field values
@@ -108,7 +108,7 @@ class Login extends CI_Controller {
 		} else {
 
 			// get authenticated user id
-			$acct = $this->Dashboard_model->get_by_user($user = $this->input->post("username"))->row();
+			$acct = $this->login_model->get_by_user($user = $this->input->post("username"))->row();
 
 			$this->form_data->user_id = $acct->user_id;
 			$this->form_data->current_password = $acct->password;
@@ -156,7 +156,7 @@ class Login extends CI_Controller {
 				"modified_by" => $info["user"]);
 
 		// parse data array to update user table
-		$this->Dashboard_model->update_password_prompt($user_id, $acct);
+		$this->login_model->update_password_prompt($user_id, $acct);
 
 		// prepare email notification
 		$this->email->set_newline("\r\n");

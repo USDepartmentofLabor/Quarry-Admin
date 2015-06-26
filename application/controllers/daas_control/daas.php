@@ -1,10 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * APIv2 AdminUI Pilot DaaS Controller
+ * APIv2 AdminUI DaaS Controller
  *
  * @package	DaaS Controller
- * @author johnsonpatrickk
+ * @author johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */

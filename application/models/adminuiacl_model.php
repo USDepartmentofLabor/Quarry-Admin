@@ -4,7 +4,7 @@
  * APIv2 AdminUI Access Model
  *
  * @package	AdminAccess Model
- * @author
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */

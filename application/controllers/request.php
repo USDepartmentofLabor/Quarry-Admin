@@ -1,10 +1,10 @@
 <?php if ( ! defined("BASEPATH")) exit("No direct script access allowed");
 
 /**
- * APIv2 AdminUI Pilot Request Controller
+ * APIv2 AdminUI Request Controller
  *
  * @package	Request Controller
- * @author
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */
@@ -21,7 +21,7 @@ class Request extends CI_Controller {
 
 	public function index() {
 		// set default attributes
-		$data["title"] = "User Request - Department of Labor - APIv2";
+		$data["title"] = "User Request - Quarry - APIv2";
 		$data["subtitle"] = "User Request";
 		$data["action"] = "request/access_process";
 		$data["request_content"] = "request_view/signup_form";
@@ -46,7 +46,7 @@ class Request extends CI_Controller {
 		if ($this->form_validation->run() == FALSE) {
 
 			$this->session->set_flashdata('data', validation_errors());
-			$data["title"] = "User Request - Department of Labor - APIv2" ;
+			$data["title"] = "User Request - Quarry - APIv2" ;
 			$data["subtitle"] = "APIv2 - User Request";
 			$data["error"] = "";
 
@@ -101,7 +101,7 @@ class Request extends CI_Controller {
 			}
 		} elseif ($response == DUPLICATE_ADMIN) {
 			// set default attributes
-			$data["title"] = "User Request - Department of Labor - APIv2";
+			$data["title"] = "User Request - Quarry - APIv2";
 			$data["subtitle"] = "APIv2 AdminUI - User Request";
 			$data["action"] = "request/access_process";
 			$data["request_content"] = "request_view/signup_form";
@@ -132,7 +132,7 @@ class Request extends CI_Controller {
 	// registration error form request
 	public function registration_error() {
 		// set default attributes
-		$data["subtitle"] = "APIv2 AdminUI - Registration Error";
+		$data["subtitle"] = "Quarry AdminUI - Registration Error";
 		$data["requestor"] = $this->input->post("first_name")." ".$this->input->post("last_name");
 		$data["action"] = "request/process_reg_error";
 		$data["request_content"] = "request_view/registration_error";
@@ -180,7 +180,7 @@ class Request extends CI_Controller {
 			$this->email->from("".FROM_EMAIL."", "".FROM_NAME."");
 			$this->email->to("".CC_EMAIL."", "".CC_NAME."");
 			$this->email->cc($from_email);
-			$this->email->subject("APIv2 AdminUI - Registration Error");
+			$this->email->subject("Quarry AdminUI - Registration Error");
 			$body = "
 				<table border=\"1\" style=\"border-width: thin; border-spacing: 2px; border-style: none; border-color: #ccc;\">
 				<tr>
@@ -197,7 +197,7 @@ class Request extends CI_Controller {
 			$this->email->send();
 
 			// load view
-			$data["subtitle"] = "APIv2 AdminUI - Registration Error";
+			$data["subtitle"] = "Quarry AdminUI - Registration Error";
 			$data["requestor"] = $contact_name;
 			$data["email_add"] = $from_email;
 			$data["action"] = "request/process_reg_error";
@@ -227,7 +227,7 @@ class Request extends CI_Controller {
 	// password reset form
 	function password_reset() {
 		// load default parameters
-		$data["title"] = "Password Reset - Department of Labor - APIv2";
+		$data["title"] = "Password Reset - Quarry - APIv2";
 		$data["subtitle"] = "Password Reset";
 		$data["action"] = site_url("request/password_reset_process");
 		$data["success"] = "";
@@ -250,7 +250,7 @@ class Request extends CI_Controller {
 
 		// email address entered by requestor
 		$email = $this->input->post("email_address");
-		$data["title"] = "Password Reset - Department of Labor - APIv2";
+		$data["title"] = "Password Reset - Quarry - APIv2";
 		$data["subtitle"] = "Password Reset";		
 		$data["action"] = site_url("request/password_reset_process");
 		$data["success"] = "";

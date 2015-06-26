@@ -1,10 +1,10 @@
 <?php defined('BASEPATH') OR exit('No direct script access allowed');
 
 /**
- * APIv2 AdminUI Token Model
+ * Quarry AdminUI Token Model
  *
  * @package	Token Model
- * @author johnsonpatrickk
+ * @author 	johnsonpatrickk
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */

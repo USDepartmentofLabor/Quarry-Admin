@@ -4,7 +4,7 @@
  * APIv2 AdminUI Application Model
  *
  * @package	Application Model
- * @author johnsonpatrickk
+ * @author	johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */
@@ -95,17 +95,8 @@ class Daas_model extends CI_Model {
 		return $this->restdb->get($this->_config->table["connection_strings"]);
 	}
 	
-/* 	public function get_rdbms_list()
-	{
-	    $this->db->order_by("db_type", "asc");
-	    return $this->db->get($this->rdbms_table);
-	} */
-	
 	public function get_rdbms_list() {
-		//$perms = $this->db->get($this->_config->table["perm"]);
-		//$this->db->query("select * from {$this->rdbms_table} order by db_type");
 		$dbtype = $this->db->get($this->_config->table["rdbms"]);
-		//print $this->db->last_query(); exit;
 		return ($dbtype->num_rows() > 0) ? $dbtype->result() : FALSE;
 	}
 	
@@ -115,7 +106,6 @@ class Daas_model extends CI_Model {
 	public function add_daas_string($new_string)
 	{
 		// check for duplicate user before inserting new request...
-		//var_dump($new_string); exit;
 		
 		$string = strtolower($this->input->post("dbname"));			
     	$slug = preg_replace('~[\\\\/:*?"<>| ]~', '_', $string);
@@ -123,8 +113,6 @@ class Daas_model extends CI_Model {
 		$this->restdb->where("daas_method", $new_string['daas_method']);
 		$this->restdb->where("daas_table_alias", $new_string['daas_table_alias']);
 		$query = $this->restdb->get($this->connect_strng_tbl);
-		
-		//print_r($query->num_rows); exit;
 		
 		if ($query->num_rows > 0)
 		{
@@ -160,9 +148,7 @@ class Daas_model extends CI_Model {
 	
 	// Get the list of connection strings by driver
 	public function get_connection_strings_by_rdbms($driver_id)
-	{
-		//SELECT * FROM `connection_strings` JOIN `api_rdbms` AS `tbl2` ON `connection_strings`.`daas_rdbms` = `tbl2`.`db_id` WHERE `connection_strings`.`daas_id` = '1'
-		
+	{		
 		$this->restdb->select('*');
 		$this->restdb->from('api_rdbms');		
 		$this->restdb->join('connection_strings', "api_rdbms.db_id = connection_strings.daas_rdbms");
@@ -188,10 +174,6 @@ class Daas_model extends CI_Model {
 		// REST DB update
 		$this->restdb->where("daas_id", $slugid);
 		$updatedb = $this->restdb->update($this->_config->table['connection_strings'], $update_string);
-		
-		/*$this->db->where("daas_id", $slugid);*/
-		/*$upDateadminUI = $this->db->update($this->_config->table['daas_manager'], $upDateString);*/
-		/*return (array($upDateadminUI, $this->db->affected_rows() == 1, $upDaterestDB, $this->restdb->affected_rows() == 1));*/
 				
 		return (array($updatedb, $this->restdb->affected_rows() == 1));
 	}

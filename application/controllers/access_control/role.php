@@ -6,9 +6,9 @@ if (! defined ( 'BASEPATH' ))
  * APIv2 AdminUI Pilot Role Controller
  *
  * @package Role Controller
- * @author
- *
- * @link http://developer.dol.gov
+ * 
+ * @author  johnsonpatrickk (Patrick Johnson Jr.)
+ * @license	http://developer.dol.gov
  * @version 1.0.0
  */
 
