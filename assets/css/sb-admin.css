@@ -66,7 +66,8 @@ option:checked {
 /* Top Right Navigation Dropdown Styles */
 
  .navbar-top-links li {
-    display: inline-block;
+    /* display: inline-block; */
+    display: none;
 }
 
 .navbar-top-links li:last-child {
@@ -122,6 +123,7 @@ option:checked {
 /* Sidebar Menu Styles */
 
  .sidebar-search {
+    display: none;
     padding: 15px;
 }
 
