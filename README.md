@@ -2,15 +2,15 @@
 
 Quarry AdminUI is a convenient way to manage datasets served by the [Quarry REST Service] (https://github.com/USDepartmentofLabor/Quarry/blob/master/README.md). It’s a human-friendly web interface for managing what data you share, who can use it, and much more.
 
-With Quarry AdminUI you can:
-	* Use any open web language to access data
-	* Obtain public datasets as JSON or XML
-	* Filter RESTful queries by key/pair parameters.
-	* Run API CRUD operations which will be available for internal usage
-	* Conduct transactions via mobile device.
-	* Add, edit and delete users
-	* Add, edit and delete Quarry API keys
-	* Add, edit, delete  and test data sources for dataset retrieval
+* With Quarry AdminUI you can:
+ * Use any open web language to access data
+ * Obtain public datasets as JSON or XML
+ * Filter RESTful queries by key/pair parameters.
+ * Run API CRUD operations which will be available for internal usage
+ * Conduct transactions via mobile device.
+ * Add, edit and delete users
+ * Add, edit and delete Quarry API keys
+ * Add, edit, delete  and test data sources for dataset retrieval
 
 # Release Information
 * **Requirements**
