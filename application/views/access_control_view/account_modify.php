@@ -18,7 +18,6 @@ $attr_FormSubmit = array('class'=>'btn-lg btn-success', 'value' =>'Update', 'typ
 $attr_FormOpen_passwd = array('role'=>'form','name'=>'password-change','id'=>'password-change');
 $pass = array('class'=>'form-control', 'name' => 'password', 'id'=>'password','required'=>'required','aria-required'=> 'true');
 $pass2 = array('class'=>'form-control', 'name' => 'password2', 'id'=>'password2','required'=>'required','aria-required'=> 'true');
-$hiddenuid = array('class'=>'form-control','name' => 'username', 'id' => 'username', 'type'=>'hidden');
 $attr_FormSubmit_passwd = array('class'=>'btn-lg btn-success', 'value' =>'Change Password', 'type'=>'submit');
 ?>
 	<div id="wrapper">
@@ -160,7 +159,6 @@ $attr_FormSubmit_passwd = array('class'=>'btn-lg btn-success', 'value' =>'Change
 		                                <div class="form-group input-group">
 		                                	<span class="input-group-addon"><i class="fa fa-key"></i></span>
 		                                	<?= form_password($pass2); ?>
-		                                	<?= form_input($hiddenuid, set_value("username", $this->form_data->username)); ?>
 		                                </div>
 		                                <!-- Change this to a button or input when using this as a form -->
 		                                <?= form_submit($attr_FormSubmit_passwd); ?>

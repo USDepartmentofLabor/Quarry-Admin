@@ -791,8 +791,7 @@ class Daas extends CI_Controller {
 	}
 
 	private function compare_strings($dbtable, $dbtable_alias)
-	{
-		
+	{	
 		// specify the field names for validation.
 		$dbtable = strtolower($this->input->post("dbtable"));
 		$dbtable_alias = strtolower($this->input->post("dbtable_alias"));
@@ -802,8 +801,6 @@ class Daas extends CI_Controller {
 		{
 			return 0;
 		}
-	
-
 
 		//replace none alphanumeric charactors
 		//i left - in case its used to combine words

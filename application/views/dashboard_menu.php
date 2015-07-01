@@ -6,7 +6,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="<?= base_url(); ?>dashboard/dashboard_admin"><?= $title; ?></a>
+                <a class="navbar-brand" href="#"><?= $title; ?></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -17,9 +17,9 @@
                         <i class="fa fa-user fa-fw"></i>Profile<i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-                        <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
+                        <li><a href="<?= base_url("access_control/admin/account_view/{$this->session->userdata('user_id')}")?>"><i class="fa fa-user fa-fw"></i> User Profile</a>
                         </li>
-                        <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
+                        <li><a href="<?= base_url("access_control/admin/account_manager/?tab=users")?>"><i class="fa fa-gear fa-fw"></i> Settings</a>
                         </li>
                         <li class="divider"></li>
                         <li><a href="<?= base_url(); ?>dashboard/logout"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
@@ -34,20 +34,7 @@
         </nav>
 		<nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
-                <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                       	<div><label for="searchbar" class = "scrn_rdr">Search</label><input type="text" class="form-control" id = "searchbar" name = "searchbar" >
-                       	</div>					        		                            					                            	
-                       
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
-                            </span>
-                        </div>
-                        <!-- /input-group -->
-                    </li>         
+                <ul class="nav" id="side-menu">         
                     <?php if ($this->session->userdata('is_admin')){ ?>          
                     <li>
                         <a href="#"><i class="fa fa-group fa-fw"></i> Account Manager<span class="fa arrow"></span></a>
@@ -93,10 +80,10 @@
                         <a href="#"><i class="fa fa-key fa-fw"></i> API Key Manager<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?= base_url('key_control/key/token_manager/?tab=key_list'); ?>">Manage API Key</a>
+                                <a href="<?= base_url("key_control/key/token_manager/?tab=key_list"); ?>">Manage API Key</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('key_control/key/token_manager/?tab=register_key'); ?>">Generate API Key</a>
+                                <a href="<?= base_url("key_control/key/token_manager/?tab=register_key"); ?>">Generate API Key</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -107,13 +94,13 @@
                         <a href="#"><i class="fa fa-wrench fa-fw"></i> Manage Datasets<span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="<?= base_url('daas_control/daas/daas_manager/?tab=add_daas'); ?>">Add Dataset</a>
+                                <a href="<?= base_url("daas_control/daas/daas_manager/?tab=add_daas"); ?>">Add Dataset</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('daas_control/daas/daas_manager/?tab=daas_list'); ?>">View Dataset</a>
+                                <a href="<?= base_url("daas_control/daas/daas_manager/?tab=daas_list"); ?>">View Dataset</a>
                             </li>
                             <li>
-                                <a href="<?= base_url('daas_control/daas/log_table/?tab=log_list'); ?>">View REST Server Logs</a>
+                                <a href="<?= base_url("daas_control/daas/log_table/?tab=log_list"); ?>">View REST Server Logs</a>
                             </li>                            
                         </ul>      
                         <!-- /.nav-second-level -->

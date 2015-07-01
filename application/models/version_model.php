@@ -1,11 +1,11 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
- * Quarry AdminUI Version Model
+ * APIv2 AdminUI Version Model
  *
  * @package	Version Model
  * @author	Daniel Jeanniton
- * @link	http://developer.dol.gov
+ * @link	
  * @version 0.1.0
  */
 
@@ -16,7 +16,7 @@ class Version_model extends CI_Model {
 	private $version_minor = '';
 	private $version_update = '';
 	private $offical_name = '';
-	private $product = 'Quarry AdminUI';
+	private $product = 'AdminUI';
 	private $build = '';
 	private $schema = '';
 	private $start_of_product = '';

@@ -4,7 +4,7 @@
  * Quarry AdminUI Token Model
  *
  * @package	Token Model
- * @author 	johnsonpatrickk
+ * @author johnsonpatrickk (Patrick Johnson Jr.)
  * @link	http://developer.dol.gov
  * @version 1.0.0
  */

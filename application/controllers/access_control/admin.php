@@ -17,7 +17,8 @@ class Admin extends CI_Controller {
 	private $version_title = '';
 	private $validation_results = '';
 
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct ();
 		$this->is_logged_in ();
 		// no page caching
@@ -31,21 +32,26 @@ class Admin extends CI_Controller {
 		$this->version_title = $this->version_model->get_name();
 		$this->super_title = $this->version_model->get_name().' '.$this->version_model->get_product().' '.$this->version;
 	}
-	public function is_logged_in() {
+	
+	public function is_logged_in()
+	{
 
 		$is_logged_in = $this->session->userdata ( "is_logged_in" );
 
-		if (! isset ( $is_logged_in ) || $is_logged_in != TRUE) {
+		if (! isset ( $is_logged_in ) || $is_logged_in != TRUE)
+		{
 			echo "You don't have permission to access this page. " . anchor ( "/login", "Login Now" );
 			die ();
 		}
 	}
 
 	// load users account view
-	public function account_manager($offset = 0) {
+	public function account_manager($offset = 0)
+	{
 
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" ))
+		{
 			show_error ( "You do not have access to this section" . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -113,15 +119,19 @@ class Admin extends CI_Controller {
 				"data-toggle" => "confirmation"
 		);
 		
-		foreach ( $users as $acct ) {
+		foreach ( $users as $acct )
+		{
 			
-			if($this->session->userdata("user_id") === $acct->user_id){
+			if($this->session->userdata("user_id") === $acct->user_id)
+			{
 				$this->table->add_row ( $acct->last_name, $acct->first_name, $acct->username, strtoupper ( $acct->status ) == "1" ? "Active" : "Disabled",
 						date ( "m/d/Y", strtotime ( $acct->date_created )),
 						anchor ( "access_control/admin/account_view/" . $acct->user_id, "View <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $view ) . " " .
 						anchor ( "access_control/admin/account_update/" . $acct->user_id, "Update <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $update ) 
 				);
-			}else{
+			}
+			else
+			{
 			$this->table->add_row ( $acct->last_name, $acct->first_name, $acct->username, strtoupper ( $acct->status ) == "1" ? "Active" : "Disabled", 
 				date ( "m/d/Y", strtotime ( $acct->date_created )), 
 				anchor ( "access_control/admin/account_view/" . $acct->user_id, "View <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $view ) . " " .
@@ -152,19 +162,24 @@ class Admin extends CI_Controller {
 				'link_back' => anchor ('access_control/admin/account_manager/?tab=users', 'Back to User Accounts')
 			);
 	
-			if(isset($this->validation_results)){
+			if(isset($this->validation_results))
+			{
 				$data['validation_errors'] = $this->validation_results;
-			}else{
+			}
+			else
+			{
 				$data['validation_errors'] = '';
 			}
 			$this->load->view ('access_control/template', $data);
 		}
 
 
-	public function account_view($user_id) {
+	public function account_view($user_id)
+	{
 		// check roles and permissions
 
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -183,26 +198,37 @@ class Admin extends CI_Controller {
 		// Extract allowable permissions by roles based on role id.
 		// TODO ADD TO HELPER CLASS all functions involving roles should be in the adminuiacl class
 		$perm_list = $this->adminuiacl_model->get_all_perms();
-		if (is_array($data ["user"]->roles )) {
-			foreach ($data ["user"]->roles as &$role ) {
+		if (is_array($data ["user"]->roles ))
+		{
+			foreach ($data ["user"]->roles as &$role )
+			{
 				$perm_checklist = $this->adminuiacl_model->get_role_perms_keys ( $role->role_id );
 				$role->set = in_array ($role, $data ["user"]->roles );
-				if ($role->set && !empty($perm_checklist)) {
-					foreach ($perm_list as &$perm ) {
-						foreach ($perm_checklist as &$check ) {
-							if ($perm->perm_id === $check->perm_id) {
+				if ($role->set && !empty($perm_checklist))
+				{
+					foreach ($perm_list as &$perm )
+					{
+						foreach ($perm_checklist as &$check )
+						{
+							if ($perm->perm_id === $check->perm_id)
+							{
 								$perm->set = true;
 								array_push($data['perm_list'],$perm);
 							}
 						}
 					}
-				}else{
+				}
+				else
+				{
 					$no_perm = (object) array('perm_id' => 0,'set'=>true,'name'=>'NO PERMISSIONS HAVE BEEN ASSIGNED TO THIS ROLE.');
 					$data ["perm_list"] = array($no_perm);				
 				}
 			}
-		} else {
-			foreach ( $data ["role_list"] as &$role ) {
+		}
+		else
+		{
+			foreach ( $data ["role_list"] as &$role )
+			{
 				$role->set = FALSE;
 			}
 			$no_role = (object) array('role_id' => 0,'set'=>true,'name'=>'NO ROLE HAS BEEN ASSIGNED TO THIS USER.');
@@ -215,9 +241,11 @@ class Admin extends CI_Controller {
 		$this->load->view ( "access_control/template", $data );
 	}
 
-	public function account_update($user_id) {
+	public function account_update($user_id)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -253,21 +281,29 @@ class Admin extends CI_Controller {
 
 		// Extract allowable permissions by roles based on role id.
 		// TODO ADD TO HELPER CLASS user->roles is an array for now..
-		if (!empty($data ["user"]->roles) && is_array ($data ["user"]->roles )) {
+		if (!empty($data ["user"]->roles) && is_array ($data ["user"]->roles ))
+		{
 			foreach ( $data ["role_list"] as &$role ) {
 				$perm_checklist = $this->adminuiacl_model->get_role_perms_keys ( $role->role_id );
 				$role->set = in_array ( $role, $data ["user"]->roles );
-				if ($role->set) {
+				if ($role->set)
+				{
 					if(!empty($perm_list)){
-						foreach ($perm_list as &$perm ) {
-							if(!empty($perm_checklist)){	
-								foreach ( $perm_checklist as &$check ) {									
-									if ($perm->perm_id === $check->perm_id) {											
+						foreach ($perm_list as &$perm )
+						{
+							if(!empty($perm_checklist))
+							{	
+								foreach ( $perm_checklist as &$check )
+								{									
+									if ($perm->perm_id === $check->perm_id)
+									{											
 										$perm->set = true;
 										array_push($data['perm_list'],$perm);
 									}
 								}
-							}else{
+							}
+							else
+							{
 								//NO PERMS HAVE BEEN ASSIGNED TO THIS ROLE SO JUST BREAK								
 								$no_perm = (object) array('perm_id' => 0,'set'=>true,'name'=>'NO PERMISSIONS HAVE BEEN ASSIGNED TO THIS ROLE.');
 								array_push($data['perm_list'],$no_perm);
@@ -277,8 +313,11 @@ class Admin extends CI_Controller {
 					}				
 				}
 			}
-		} else {
-			foreach ( $data ["role_list"] as &$role ) {
+		}
+		else
+		{
+			foreach ( $data ["role_list"] as &$role )
+			{
 				$role->set = FALSE;
 			}
 			$no_perm = (object) array('perm_id' => 0,'set'=>true,'name'=>'NO ROLE HAS BEEN ASSIGNED TO THIS USER.');
@@ -289,8 +328,10 @@ class Admin extends CI_Controller {
 		$this->load->view ( "access_control/template", $data );
 	}
 
-	public function account_delete($user_id) {
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" )) {
+	public function account_delete($user_id)
+	{
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		// set validation properties
@@ -311,7 +352,8 @@ class Admin extends CI_Controller {
 
 		// set common properties
 		$roles = $this->adminuiacl_model->get_user_role ($user_id);
-		if(empty($roles)){
+		if(empty($roles))
+		{
 			$roles[0] = (object)array('role_id' => 0,'set'=>true,'name'=>'NO ROLE HAS BEEN ASSIGNED TO THIS USER.');
 		}
 		$data ["perm_list"] = array();
@@ -319,14 +361,19 @@ class Admin extends CI_Controller {
 
 		// Extract allowable permissions by roles based on role id.
 		// TODO ADD TO HELPER CLASS user->roles is an array for now..
-		if (!empty($data ["user"]->roles) && is_array ($data ["user"]->roles )) {
+		if (!empty($data ["user"]->roles) && is_array ($data ["user"]->roles ))
+		{
 			foreach ( $data ["role_list"] as &$role ) {
 				$perm_checklist = $this->adminuiacl_model->get_role_perms_keys ( $role->role_id );
 				$role->set = in_array ( $role, $data ["user"]->roles );
-				if ($role->set) {
-					foreach ($perm_list as &$perm ) {
-						foreach ( $perm_checklist as &$check ) {
-							if ($perm->perm_id === $check->perm_id) {
+				if ($role->set)
+				{
+					foreach ($perm_list as &$perm )
+					{
+						foreach ( $perm_checklist as &$check )
+						{
+							if ($perm->perm_id === $check->perm_id)
+							{
 								$perm->set = true;
 								array_push($data['perm_list'],$perm);
 							}
@@ -352,18 +399,22 @@ class Admin extends CI_Controller {
 		$this->load->view ( "access_control/template", $data );
 	}
 
-	public function del_account_process($user_id) {
+	public function del_account_process($user_id)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		$this->adminuiacl_model->del_user ( $user_id );
 		redirect ( "access_control/admin/account_manager/?tab=users&del_success_message=success" );
 	}
 
-	public function account_modify() {
+	public function account_modify()
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		// Need to remember the last pagination number in order to properly link back from an action
@@ -394,13 +445,16 @@ class Admin extends CI_Controller {
 		);
 
 		// run validation
-		if ($this->form_validation->run () == FALSE) {
+		if ($this->form_validation->run () == FALSE)
+		{
 			// set error properties
 			$this->session->set_flashdata('data', validation_errors());
 			$data["acl_content"] = "access_control/admin/account_manager/";
 			redirect("access_control/admin/account_update/{$user_id}");
 
-		} else {
+		}
+		else
+		{
 				
 			// save modification;
 			if ($this->adminuiacl_model->edit_user_roles ( $user_id = $this->input->post ( "user_id" ), $this->input->post ( "roles" ) )) {
@@ -417,16 +471,20 @@ class Admin extends CI_Controller {
 
 				redirect("access_control/admin/account_update/{$user_id}/?UpdateSuccess=success");
 
-			} else {
+			}
+			else
+			{
 				show_error ( "Failed assigning user." );
 			}
 		}
 	}
 
 	// create admin account form
-	public function add_admin() {
+	public function add_admin()
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "add_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "add_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		$this->form_data = new stdClass;
@@ -436,7 +494,8 @@ class Admin extends CI_Controller {
 		// Set validation properties for adding an admin
 		$this->_set_new_user_rules();
 
-		if ($this->form_validation->run() == FALSE) {
+		if ($this->form_validation->run() == FALSE)
+		{
 					// Validation error messages
 			$this->session->set_flashdata('validation_results', validation_errors());
 			$this->validation_results = validation_errors();
@@ -451,15 +510,19 @@ class Admin extends CI_Controller {
 			// CI only load form "set_value" data if the method below is defined. the previous code is commented above
 			//$this->account_manager($offset = 0);
 
-		} else {
+		}
+		else
+		{
 			// Call admin model and process new admin
 			$this->add_admin_process();
 		}
 	}
 
-	private function add_admin_process() {
+	private function add_admin_process()
+	{
 
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "add_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "add_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		$role_array = $this->input->post("roles");
@@ -480,7 +543,8 @@ class Admin extends CI_Controller {
 
 		$response = $this->adminuiacl_model->admin_add_user($new_admin);
 
-		if ($response == NO_DUPLICATE_ADMIN) {
+		if ($response == NO_DUPLICATE_ADMIN)
+		{
 			//Everything checks out add role
 			$new_admin = $this->adminuiacl_model->get_user_by('username',$this->input->post("username"));
 			$this->adminuiacl_model->add_user_role($new_admin->user_id,$role_id);
@@ -513,31 +577,42 @@ class Admin extends CI_Controller {
 
 			$this->email->message ( $body );
 
-			if ($this->email->send ()) {
+			if ($this->email->send ())
+			{
 				// get user details
 				$user = $this->adminuiacl_model->get_by_user ( $user = $this->input->post ( "username" ) )->row ();
 
 				// echo 'Your message was sent successfully...';
 				redirect ( "access_control/admin/account_manager/?success_message=true&user={$user->user_id}#add_admin" );
-			} else {
+			}
+			else
+			{
 				show_error ( $this->email->print_debugger () );
 			}
-		} elseif ($response == DUPLICATE_ADMIN) {
+		}
+		elseif ($response == DUPLICATE_ADMIN)
+		{
 			// redirect to password tab on duplicate admin error
 			redirect ( "access_control/admin/account_manager/?admin_error_message=true#add_admin" );
-		} elseif ($response == DUPLICATE_REG) {
+		}
+		elseif ($response == DUPLICATE_REG)
+		{
 			// redirect to password tab on registered user error
 			redirect ( "access_control/admin/account_manager/?reg_error_message=true#add_admin" );
-		}else {
+		}
+		else
+		{
 			// TODO throw internal server error page
 			show_error ( "The system is currently down for maintenance please try again later." . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 	}
 
 	// view pending account details
-	public function pend_account_view($user_id) {
+	public function pend_account_view($user_id)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -556,9 +631,11 @@ class Admin extends CI_Controller {
 	}
 
 	// load pending request view
-	public function pending_request($offset = 0) {
+	public function pending_request($offset = 0)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "view_users" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		// offset
@@ -614,7 +691,8 @@ class Admin extends CI_Controller {
 				"class" => "btn btn-danger btn-sm",
 				"data-toggle" => "confirmation"
 		);
-		foreach ( $users as $acct ) {
+		foreach ( $users as $acct )
+		{
 			$this->table->add_row ($acct->first_name, $acct->last_name, $acct->username, strtoupper ( $acct->status ) == "1" ? "Disabled" : "Pending", date ( "m/d/Y", strtotime ( $acct->date_requested ) ), anchor ( "access_control/admin/pend_account_view/" . $acct->user_id, "View <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $view ) . " " . anchor ( "access_control/admin/pend_account_update/" . $acct->user_id, "Approve <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $update ) . " " . anchor ( "access_control/admin/pend_account_delete/" . $acct->user_id, "Deny <span class='scrn_rdr'>".$acct->first_name." ".$acct->last_name."</span>", $delete ) );
 		}
 		$this->table->set_template ($table_setup);
@@ -632,9 +710,11 @@ class Admin extends CI_Controller {
 		$this->load->view ( "access_control/template", $data );
 	}
 
-	public function pend_account_update($user_id) {
+	public function pend_account_update($user_id)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -673,9 +753,11 @@ class Admin extends CI_Controller {
 	}
 
 	// pending requet modifier
-	public function pend_account_modify() {
+	public function pend_account_modify()
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		$page_index = $this->session->userdata('last_pending_pagination');
@@ -704,13 +786,16 @@ class Admin extends CI_Controller {
 		$this->_set_rules_pendreqst ();
 
 		// run validation
-		if ($this->form_validation->run () == FALSE) {
+		if ($this->form_validation->run () == FALSE)
+		{
 			// Set error properties
 			$this->session->set_flashdata('data', validation_errors());
 			$data ["acl_content"] = "access_control_view/pend_account_modify";
 			redirect("access_control/admin/pend_account_update/{$user_id}");
 
-		} else {
+		}
+		else
+		{
 
 			// Transfer new account
 			$new_acct = array (
@@ -745,8 +830,10 @@ class Admin extends CI_Controller {
 			$this->request_approved_view ( $user = $this->input->post ( "username" ), $name = $user_info->first_name );
 		}
 	}
-	public function pend_account_delete($user_id) {
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" )) {
+	public function pend_account_delete($user_id)
+	{
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		// set validation properties
@@ -778,8 +865,10 @@ class Admin extends CI_Controller {
 
 		$this->load->view ( "access_control/template", $data );
 	}
-	public function del_pend_account_process($user_id){
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" )) {
+	public function del_pend_account_process($user_id)
+	{
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "delete_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -796,9 +885,11 @@ class Admin extends CI_Controller {
 			*/
 			redirect ( "access_control/admin/pending_request/?del_success_message=success" );
 	}
-	public function request_approved_view($user, $name) {
+	public function request_approved_view($user, $name)
+	{
 		// check roles and permissions
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "access_acl" )) {
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "access_acl" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 		// set common properties
@@ -818,30 +909,41 @@ class Admin extends CI_Controller {
 
 		$this->load->view ( "access_control/template", $data );
 	}
-	public function roles_select_ui() {
+	public function roles_select_ui()
+	{
 
 		$roles_json = '';
 		$all_perms = $this->adminuiacl_model->get_all_perms ();
 		$role_id = $this->input->get ( "rid" );
 		$perm_keys = $this->adminuiacl_model->get_role_perms_keys ( $role_id );
 		$flag = 0;
-		if(!empty($perm_keys)){
+		
+		if(!empty($perm_keys))
+		{
 			// Populate the dropdown options here
-			foreach ( $all_perms as $perm ) {
-				foreach ( $perm_keys as $keys ) {
-					if ($perm->perm_id == $keys->perm_id) {
+			foreach ( $all_perms as $perm )
+			{
+				foreach ( $perm_keys as $keys )
+				{
+					if ($perm->perm_id == $keys->perm_id)
+					{
 						$flag = 1;
 					}
 				}
-				if ($flag) {
+				if ($flag)
+				{
 					$roles_json .= " <option selected value = " . $perm->perm_id . "> " . $perm->name;
-				} else {
+				}
+				else
+				{
 					// UNCOMMENT if you want the list unfiltered
 					//$roles_json .= "<option  value=" . $perm->perm_id . ">" . $perm->name;
 				}
 				$flag = 0;
 			}
-		}else{
+		}
+		else
+		{
 			$roles_json .= "<option selected> NO PERMISSIONS HAVE BEEN ASSIGNED TO THIS ROLE.";
 		}
 		print_r ( $roles_json );
@@ -849,8 +951,10 @@ class Admin extends CI_Controller {
 		// echo json_encode($roles_json);
 	}
 	// admin password change...
-	public function password_change_process() {
-		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" )) {
+	public function password_change_process()
+	{
+		if (! $this->adminuiacl_model->user_has_perm ( $this->session->userdata ( "user_id" ), "edit_user" ))
+		{
 			show_error ( "You do not have access to this section " . anchor ( $this->agent->referrer (), "Return", 'title="Go back to previous page"' ) );
 		}
 
@@ -876,7 +980,8 @@ class Admin extends CI_Controller {
 		$this->_set_passwd_rules ();
 		
 		// run validation
-		if ($this->form_validation->run () == FALSE) {
+		if ($this->form_validation->run () == FALSE)
+		{
 			$this->session->set_flashdata('data', validation_errors());
 			$data ["title"] = $this->super_title;
 			$data ["version_official_name"] = $this->version_title;
@@ -886,8 +991,9 @@ class Admin extends CI_Controller {
 			$data["acl_content"] = "access_control/admin/account_manager/";
 			redirect("access_control/admin/account_update/{$user_id}#password-pills");
 
-		} else {
-
+		}
+		else
+		{
 			// get authenticated user user_id
 			$acct = $this->adminuiacl_model->get_by_user ( $user = $this->input->post ( "username" ) )->row ();
 			$this->form_data->user_id = $acct->user_id;
@@ -901,13 +1007,16 @@ class Admin extends CI_Controller {
 			$conf_password = md5 ( $this->input->post ( "password2" ) );
 
 			// echo $post_password; exit;
-			if ($new_password === $conf_password) {
+			if ($new_password === $conf_password)
+			{
 				// call the password change method
 				$this->password_change_admin ( $this->form_data->user_id, $conf_password, $acct->email_address );
 
 				// redirect password change profile tab with success message
 				redirect ( "access_control/admin/account_update/{$acct->user_id}/?PasswordChangeSuccess=success#password-pills" );
-			} else {
+			}
+			else
+			{
 				// redirect password change profile tab with error message
 				redirect ( "access_control/admin/account_update/{$acct->user_id}/?PasswordChangeError=error#password-pills" );
 			}
@@ -915,7 +1024,8 @@ class Admin extends CI_Controller {
 	}
 
 	// process password by super admin
-	protected function password_change_admin($user_id, $conf_password, $email) {
+	protected function password_change_admin($user_id, $conf_password, $email)
+	{
 		$acct = array (
 				"password" => $conf_password,
 				"password_reset" => "" . PASS_RESET_REQUIRED . "",
@@ -937,7 +1047,8 @@ class Admin extends CI_Controller {
 	}
 
 	// set empty default form field values
-	protected function _set_fields() {
+	protected function _set_fields()
+	{
 		$this->form_data->user_id = "";
 		$this->form_data->first_name = "";
 		$this->form_data->last_name = "";
@@ -945,8 +1056,10 @@ class Admin extends CI_Controller {
 		$this->form_data->status = "";
 		$this->form_data->username = "";
 	}
-	protected function _set_pending_rules() {
-
+	
+	// protect pending rules
+	protected function _set_pending_rules()
+	{
 		$id_check = $this->input->post('user_id');
 		$current_acct = $this->adminuiacl_model->get_user_by('user_id',$id_check);
 
@@ -990,11 +1103,13 @@ class Admin extends CI_Controller {
 		$post_email_address = $this->input->post('email_address');
 
 		//Do not apply rule if the current user already owns the username
-		if($current_acct_name != $post_username){
+		if($current_acct_name != $post_username)
+		{
 			$this->form_validation->set_rules ( "username", "User Name", "trim|required|is_unique[admin_user.username]|min_length[2]|max_length[50]" );
 		}
 		//Do not apply rule if the current user already owns the email address
-		if($current_acct_email != $post_email_address) {
+		if($current_acct_email != $post_email_address)
+		{
 			$this->form_validation->set_rules ( "email_address", "Email Address", "trim|required|valid_email|is_unique[admin_user.email_address]" );
 		}
 		$this->form_validation->set_rules ( "first_name", "First Name", "trim|required|min_length[2]|max_length[50]" );
@@ -1008,7 +1123,8 @@ class Admin extends CI_Controller {
 	}
 
 	// Validation rules for adding a new user
-	protected function _set_new_user_rules(){
+	protected function _set_new_user_rules()
+	{
 		$this->form_validation->set_rules ( "first_name", "First Name", "trim|required|min_length[2]|max_length[50]" );
 		$this->form_validation->set_rules ( "last_name", "Last Name", "trim|required|min_length[2]|max_length[50]" );
 		$this->form_validation->set_rules ( "email_address", "Email Address", "trim|required|valid_email|is_unique[admin_user.email_address]" );
@@ -1025,15 +1141,16 @@ class Admin extends CI_Controller {
 	}
 
 	// set empty default form field values for pending request
-	protected function _set_fields_pendreqst() {
-		
+	protected function _set_fields_pendreqst()
+	{		
 		$this->form_data->first_name = "";
 		$this->form_data->last_name = "";
 		$this->form_data->email_address = "";
 	}
 
 	// validation rules
-	protected function _set_rules_pendreqst() {
+	protected function _set_rules_pendreqst()
+	{
 		$this->form_validation->set_rules ( "first_name", "First name", "trim|required|min_length[2]|max_length[50]" );
 		$this->form_validation->set_rules ( "last_name", "Last name", "trim|required|min_length[2]|max_length[50]" );
 		$this->form_validation->set_rules ( "roles", "Role", "trim|required" );
@@ -1049,13 +1166,15 @@ class Admin extends CI_Controller {
 	}
 
 	// set empty default form field password values
-	protected function _set_passwd_fields() {
+	protected function _set_passwd_fields()
+	{
 		$this->form_data->password = "";
 		$this->form_data->password2 = "";
 	}
 
 	// validation rules
-	protected function _set_passwd_rules() {
+	protected function _set_passwd_rules()
+	{
 		$this->form_validation->set_rules ( 'password', 'New Password', 'trim|required|min_length[6]|max_length[32]' );
 		$this->form_validation->set_rules ( 'password2', 'Confirm password', 'trim|required|min_length[6]|max_length[32]|matches[password]' );
 

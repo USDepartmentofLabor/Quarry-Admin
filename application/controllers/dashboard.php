@@ -42,7 +42,8 @@ class Dashboard extends CI_Controller {
 		$is_logged_in = $this->session->userdata("is_logged_in");
 		//print_r($this->session->all_userdata()); exit;
 
-		if (!isset($is_logged_in) || $is_logged_in != TRUE) {
+		if (!isset($is_logged_in) || $is_logged_in != TRUE)
+		{
 			echo "You don't have permission to access this page.". anchor("/login", "Login Now");
 			die();
 		}
@@ -52,7 +53,7 @@ class Dashboard extends CI_Controller {
 	{
 		$data ["title"] = $this->super_title;
 		$data["main_content"] = "dashboard_view/dashboard_menu";
-		$data ["version_official_name"] = $this->version_title;		
+		$data ["version_official_name"] = $this->version_title;
 		$this->load->view("dashboard/template",  $data);
 	}
 

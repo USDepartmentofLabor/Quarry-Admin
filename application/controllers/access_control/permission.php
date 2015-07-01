@@ -19,7 +19,8 @@ class Permission extends CI_controller {
 	private $version_title = '';
 	private $validation_results = '';
 	
-	public function __construct() {
+	public function __construct()
+	{
 		parent::__construct();
 		$this->is_logged_in();
 
@@ -35,18 +36,22 @@ class Permission extends CI_controller {
 		
 	}
 
-	public function is_logged_in() {
+	public function is_logged_in()
+	{
 		$is_logged_in = $this->session->userdata("is_logged_in");
 		//print_r($this->session->all_userdata()); exit;
 
-		if (!isset($is_logged_in) || $is_logged_in != TRUE) {
+		if (!isset($is_logged_in) || $is_logged_in != TRUE)
+		{
 			echo "You don't have permission to access this page. ". anchor("/login", "Login Now");
 			die();
 		}
 	}
 
-	public function permission_manager($offset = 0) {
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "view_perms")) {
+	public function permission_manager($offset = 0)
+	{
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "view_perms"))
+		{
 			show_error("Permission denied.", 401);
 		}
 		//offset
@@ -104,12 +109,16 @@ class Permission extends CI_controller {
 		$view = array("class" => "btn btn-warning btn-sm");
 		$update = array("class" => "btn btn-success btn-sm");
 		$delete = array("class" => "btn btn-danger btn-sm", "data-toggle" => "confirmation");
-		foreach ($perms as $perm) {
-			if($perm->locked){					
+		foreach ($perms as $perm)
+		{
+			if($perm->locked)
+			{					
 				$this->table->add_row($perm->slug, $perm->name, $perm->description,
 					anchor("access_control/permission/perm_view/".$perm->perm_id, "View <span class='scrn_rdr'>".$perm->name."</span>", $view)
 				);
-			}else{
+			}
+			else
+			{
 				$this->table->add_row($perm->slug, $perm->name, $perm->description,
 						anchor("access_control/permission/perm_view/".$perm->perm_id, "View <span class='scrn_rdr'>".$perm->name."</span>", $view)." ".
 						anchor("access_control/permission/perm_update/".$perm->perm_id, "Update <span class='scrn_rdr'>".$perm->name."</span>", $update)." ".
@@ -122,24 +131,28 @@ class Permission extends CI_controller {
 
 		// load account view
 		$data["acl_content"] = "access_control_view/permission_manager";
-		if(isset($this->validation_results)){
+		if(isset($this->validation_results))
+		{
 			$data['validation_errors'] = $this->validation_results;
-		}else{
+		}
+		else
+		{
 			$data['validation_errors'] = '';
 		}		
 		$this->load->view("access_control/template", $data);
 	}
 	public function add_perm(){
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "add_perm")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "add_perm"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 
 		//validation
 		$this->_set_perm_rules();
 
-		if($this->form_validation->run() == FALSE) {
-			
+		if($this->form_validation->run() == FALSE)
+		{			
 			$this->validation_results = validation_errors();
 						
 			// set common properties
@@ -154,8 +167,9 @@ class Permission extends CI_controller {
 
 			redirect("access_control/permission/permission_manager#add_permission");
 			
-		} else {
-
+		}
+		else
+		{
 			$new_perm = array(
 					"name"  => $this->input->post("name"),
 					"slug"  => $this->input->post("slug"),
@@ -166,9 +180,12 @@ class Permission extends CI_controller {
 			redirect("access_control/permission/permission_manager/1/add_perm?success_message=success#add_permission");
 		}
 	}
-	public function perm_view($perm_id) {
+	
+	public function perm_view($perm_id)
+	{
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "view_perms")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "view_perms"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 		
@@ -187,9 +204,11 @@ class Permission extends CI_controller {
 		$this->load->view("access_control/template", $data);
 	}
 
-	public function perm_update($perm_id) {
+	public function perm_update($perm_id)
+	{
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "edit_perm")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "edit_perm"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 		
@@ -216,9 +235,11 @@ class Permission extends CI_controller {
 		$this->load->view("access_control/template", $data);
 	}
 
-	public function permission_modify(){
+	public function permission_modify()
+	{
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "edit_perm")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "edit_perm"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 		
@@ -230,7 +251,8 @@ class Permission extends CI_controller {
 		$this->_set_change_perm_rules();
 
 		//Add Validation Rules here..
-		if($this->form_validation->run() == FALSE) {
+		if($this->form_validation->run() == FALSE)
+		{
 
 			// set common properties
 			$this->session->set_flashdata('data', validation_errors());
@@ -245,13 +267,16 @@ class Permission extends CI_controller {
 
 			redirect("access_control/permission/perm_update/{$perm_id}");
 
-		} else {
+		}
+		else
+		{
 			$perm_pdo = array(
 				"perm_id" => $this->input->post("perm_id"),
 				"name" => $this->input->post("name"),
 				"slug" => $this->input->post("slug"),
 				"description" => $this->input->post("description")
 			);
+			
 			$data ["title"] = $this->super_title;
 			$data ["version_official_name"] = $this->version_title;
 				
@@ -272,9 +297,11 @@ class Permission extends CI_controller {
 			redirect("access_control/permission/perm_update/{$perm_id}/?UpdateSuccess=success");
 		}
 	}
-	public function perm_delete($perm_id) {
+	public function perm_delete($perm_id)
+	{
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "delete_perm")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "delete_perm"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 		// set validation properties
@@ -298,9 +325,11 @@ class Permission extends CI_controller {
 		$this->load->view("access_control/template", $data);
 	}
 
-	public function del_perm_process($perm_id){
+	public function del_perm_process($perm_id)
+	{
 		// check roles and permissions
-		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "delete_perm")) {
+		if(!$this->adminuiacl_model->user_has_perm($this->session->userdata("user_id"), "delete_perm"))
+		{
 			show_error("You do not have access to this section ". anchor($this->agent->referrer(), "Return", 'title="Go back to previous page"'));
 		}
 		$this->adminuiacl_model->del_perm($perm_id);
@@ -308,8 +337,8 @@ class Permission extends CI_controller {
 	}
 
 	// validation rules
-	protected function _set_perm_rules() {
-
+	protected function _set_perm_rules()
+	{
 		// set empty default form field values
 		$this->form_data->name = "";
 		$this->form_data->slug = "";
@@ -324,8 +353,8 @@ class Permission extends CI_controller {
               <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-hidden=\"true\">&times;</button>", "</div>" );
 	}
 	// validation rules
-	protected function _set_change_perm_rules() {
-
+	protected function _set_change_perm_rules()
+	{
 		// set empty default form field values
 		$this->form_data->name = "";
 		$this->form_data->slug = "";
@@ -340,11 +369,13 @@ class Permission extends CI_controller {
 		//print_r($perm_obj);
 		//print_r($new_name."  ".$new_slug); exit;
 
-		if($perm_obj->name != $new_name){
+		if($perm_obj->name != $new_name)
+		{
 			$this->form_validation->set_rules("name", "System Name", "trim|min_length[3]|max_length[50]|required|is_unique[perm.name]");
 		}
 
-		if($perm_obj->slug != $new_slug){
+		if($perm_obj->slug != $new_slug)
+		{
 			$this->form_validation->set_rules("slug", "System ID", "trim|min_length[3]|max_length[50]|required|is_unique[perm.slug]");
 		}
 
