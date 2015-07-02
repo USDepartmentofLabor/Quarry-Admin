@@ -1,4 +1,18 @@
-# Quarry AdminUI
+# Quarry AdminUI patch update for v1.0.1 - 2015.07.02
+
+This is a security patch update for Quarry AdminUI. If you wish to use the Quarry API, you will need to download the latest version of [Quarry REST](https://github.com/USDepartmentofLabor/Quarry/) 
+
+# Change log v1.0.1 - 2015.07.02
+
+  **Changes**
+   * Added better controls for removing users and permissions
+   * Profile links have been updated to reflect current operations
+  
+  **Removed**
+   * Unused UI components have been removed from the administrative interface
+  
+  **Security**
+   * Added additional checks for securing user requests
 
 Quarry AdminUI is a convenient way to manage datasets served by the [Quarry REST Service] (https://github.com/USDepartmentofLabor/Quarry/blob/master/README.md). It’s a human-friendly web interface for managing what data you share, who can use it, and much more.
 
