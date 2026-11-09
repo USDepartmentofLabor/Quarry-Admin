@@ -1,3 +1,6 @@
+>[!WARNING]
+>This repository has been archived and is no longer maintained. The code is provided for historical reference and may contain unpatched or unknown vulnerabilities. It should ***not*** be used in production systems.
+
 # Quarry AdminUI patch update for v1.0.1 - 2015.07.02
 
 This is a security patch update for Quarry AdminUI. If you wish to use the Quarry API, you will need to download the latest version of [Quarry REST](https://github.com/USDepartmentofLabor/Quarry/) 
